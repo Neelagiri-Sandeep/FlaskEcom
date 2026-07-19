@@ -396,17 +396,8 @@ def checkout():
     users_ref.document(session['user']).update({'cart': []})
 
   # Send confirmation email
-    try:
-        email_sent = send_order_email(
-            session['user'],
-            session['name'],
-            order_id,
-            cart,
-            total
-        )
-    except Exception as e:
-        print("Email Error:", e)
-        email_sent = False
+    email_sent = False
+# email sending temporarily disabled
 
     return render_template(
         'order_success.html',
