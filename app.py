@@ -395,16 +395,27 @@ def checkout():
     # Clear cart
     users_ref.document(session['user']).update({'cart': []})
 
-    # Send confirmation email
-    email_sent = send_order_email(session['user'], session['name'], order_id, cart, total)
+  # Send confirmation email
+    try:
+        email_sent = send_order_email(
+            session['user'],
+            session['name'],
+            order_id,
+            cart,
+            total
+        )
+    except Exception as e:
+        print("Email Error:", e)
+        email_sent = False
 
-    return render_template('order_success.html',
-                           order_id=order_id,
-                           items=cart,
-                           total=total,
-                           name=session['name'],
-                           email_sent=email_sent)
-
+    return render_template(
+        'order_success.html',
+        order_id=order_id,
+        items=cart,
+        total=total,
+        name=session['name'],
+        email_sent=email_sent
+    )
 
 @app.route('/my_orders')
 @login_required
